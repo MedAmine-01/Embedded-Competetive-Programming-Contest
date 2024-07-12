@@ -101,12 +101,12 @@ int main(void)
   //Random delay
   HAL_Delay(200);
 
-  HAL_UART_Receive_DMA(&huart1, (uint8_t *)&rxBuffer, 4);
+  HAL_UART_Receive_DMA(&huart1, (uint8_t *)rxBuffer, 4);
 
   //at this point if we still didn't receive ping we start by sending it.
   //the rest of the communication is taken care by the txcplt and rxcplt interrupts
   if(sendPingFlag){
-	  HAL_UART_Transmit_DMA(&huart1, (uint8_t *) &ping, 4);
+	  HAL_UART_Transmit_DMA(&huart1, (uint8_t *) ping, 4);
   }
 
   /* USER CODE END 2 */
@@ -266,7 +266,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 		HAL_Delay(200);
 		HAL_GPIO_WritePin(LED_RX_PING_GPIO_Port, LED_RX_PING_Pin, GPIO_PIN_RESET);
 		//Respond with pong
-		HAL_UART_Transmit_DMA(&huart1, (uint8_t *) &pong, 4);
+		HAL_UART_Transmit_DMA(&huart1, (uint8_t *) pong, 4);
 	}
 	else if(!strcmp(rxBuffer, pong)){
 		//blink the RX_pong LED
@@ -274,7 +274,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 		HAL_Delay(200);
 		HAL_GPIO_WritePin(LED_RX_PING_GPIO_Port, LED_RX_PING_Pin, GPIO_PIN_RESET);
 		//Send ping Once again
-		HAL_UART_Transmit_DMA(&huart1, (uint8_t *) &ping, 4);
+		HAL_UART_Transmit_DMA(&huart1, (uint8_t *) ping, 4);
 	}
 }
 
